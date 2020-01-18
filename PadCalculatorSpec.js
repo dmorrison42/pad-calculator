@@ -9,13 +9,20 @@ describe('An attenuator calculator', () => {
         let pad3Db = PadCalculator.GetPiPad(3, 50, 50)
         expect(pad3Db.shuntIn).toBeCloseTo(292.402, 3);
         expect(pad3Db.series).toBeCloseTo(17.615, 3);
-        expect(pad3Db.shuntOut).toBeCloseTo(pad3Db.shuntIn);
+        expect(pad3Db.shuntOut).toBeCloseTo(pad3Db.shuntIn, 3);
     });
 
     it('should assume 50 ohms', () => {
         let pad3Db = PadCalculator.GetPiPad(3)
         expect(pad3Db.shuntIn).toBeCloseTo(292.402, 3);
         expect(pad3Db.series).toBeCloseTo(17.615, 3);
-        expect(pad3Db.shuntOut).toBeCloseTo(pad3Db.shuntIn);
+        expect(pad3Db.shuntOut).toBeCloseTo(pad3Db.shuntIn, 3);
     })
+
+    it('should calculate unmatched pi pads', () => {
+        let pad6Db = PadCalculator.GetPiPad(6, 47, 55)
+        expect(pad6Db.shuntIn).toBeCloseTo(108.431, 3);
+        expect(pad6Db.series).toBeCloseTo(37.982, 3);
+        expect(pad6Db.shuntOut).toBeCloseTo(246.827, 3);
+    });
 })
