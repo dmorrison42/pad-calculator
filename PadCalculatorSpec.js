@@ -11,4 +11,11 @@ describe('An attenuator calculator', () => {
         expect(pad3Db.series).toBeCloseTo(17.615, 3);
         expect(pad3Db.shuntOut).toBeCloseTo(pad3Db.shuntIn);
     });
+
+    it('should assume 50 ohms', () => {
+        let pad3Db = PadCalculator.GetPiPad(3)
+        expect(pad3Db.shuntIn).toBeCloseTo(292.402, 3);
+        expect(pad3Db.series).toBeCloseTo(17.615, 3);
+        expect(pad3Db.shuntOut).toBeCloseTo(pad3Db.shuntIn);
+    })
 })

@@ -11,6 +11,9 @@
     }
 
     function GetPiPad(attenuation, zIn, zOut) {
+        zIn = zIn == null ? 50 : zIn;
+        zOut = zOut == null ? 50 : zOut;
+
         let vOut = Math.sqrt((zOut / zIn) * (1 / Math.pow(10, attenuation / 10)));
 
         let shuntInN = (zOut * zIn) - (Math.pow(zIn, 2) * Math.pow(vOut, 2));
