@@ -37,4 +37,28 @@ describe('An attenuator calculator', () => {
         expect(samplePad.attenuationForward).toBeCloseTo(22.28, 2);
         expect(samplePad.attenuationReverse).toBeCloseTo(22.28, 2);
     });
+
+    it('should return the inputs given outputs', () => {
+        let samplePad = PadCalculator.EvaluatePiPad({
+            shuntIn: 150.476,
+            series: 37.352,
+            shuntOut: 150.476,
+        });
+        expect(samplePad.zIn).toBeCloseTo(50, 3);
+        expect(samplePad.zOut).toBeCloseTo(50, 3);
+        expect(samplePad.attenuationForward).toBeCloseTo(6, 3);
+        expect(samplePad.attenuationReverse).toBeCloseTo(6, 3);
+    });
+
+    it('should return the inputs given outputs with mismatch', () => {
+        let samplePad = PadCalculator.EvaluatePiPad({
+            shuntIn: 86.517,
+            series: 45.747,
+            shuntOut: 2386.203,
+        });
+        expect(samplePad.zIn).toBeCloseTo(50, 3);
+        expect(samplePad.zOut).toBeCloseTo(75, 3);
+        expect(samplePad.attenuationForward).toBeCloseTo(6, 3);
+        expect(samplePad.attenuationReverse).toBeCloseTo(6, 3);
+    });
 })

@@ -50,6 +50,18 @@
     }
 
     function EvaluatePiPad(pad, zIn, zOut) {
+        if (zIn == null && zOut == null) {
+            let x = 10000;
+            let y = 10000;
+            let result = {};
+            for (let i = 1; i < 100; i++) {
+                result = EvaluatePiPad(pad, x, y);
+                x = result.zIn;
+                y = result.zOut;
+            }
+            return result;
+        }
+
         let calcZIn = CalculatePiInputImpedance(pad.shuntIn, pad.series, pad.shuntOut, zOut);
         let calcZOut = CalculatePiInputImpedance(pad.shuntOut, pad.series, pad.shuntIn, zIn);
         let attenuationForward = CalculatePiAttenuation(pad.shuntIn, pad.series, pad.shuntOut, zIn, zOut)
