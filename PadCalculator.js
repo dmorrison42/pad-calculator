@@ -1,13 +1,17 @@
 !(function () {
-    function Lin2dB(x) {
+    function v2dB(x) {
         return 20 * Math.log10(x);
+    }
+
+    function power2dB(x) {
+        return 10 * Math.log10(x);
     }
 
     function GetMinimumMatchAttenuation(zIn, zOut) {
         let small = Math.min(zIn, zOut);
         let large = Math.max(zIn, zOut);
         let lin = Math.sqrt(large / small) + Math.sqrt(large / small - 1);
-        return Lin2dB(lin);
+        return v2dB(lin);
     }
 
     function GetPiPad(attenuation, zIn, zOut) {
@@ -32,8 +36,35 @@
         };
     }
 
+    function CalculatePiInputImpedance(a, b, c, zC) {
+        let n = a * (b * zC + b * c + c * zC);
+        let d = c * zC + ((b + a) * (zC + c));
+        return n / d;
+    }
+
+    function CalculatePiAttenuation(a, b, c, zA, zC) {
+        let zACalculated = CalculatePiInputImpedance(a, b, c, zC);
+        let vIn = 2 - ((2 * zA) / (zA + zACalculated))
+        let vOut = (vIn * c * zC) / (b * (zC + c) + c * zC)
+        return power2dB((1 / zA) / (Math.pow(vOut, 2) / zC));
+    }
+
+    function EvaluatePiPad(pad, zIn, zOut) {
+        let calcZIn = CalculatePiInputImpedance(pad.shuntIn, pad.series, pad.shuntOut, zOut);
+        let calcZOut = CalculatePiInputImpedance(pad.shuntOut, pad.series, pad.shuntIn, zIn);
+        let attenuationForward = CalculatePiAttenuation(pad.shuntIn, pad.series, pad.shuntOut, zIn, zOut)
+        let attenuationReverse = CalculatePiAttenuation(pad.shuntOut, pad.series, pad.shuntIn, zOut, zIn)
+        return {
+            zIn: calcZIn,
+            zOut: calcZOut,
+            attenuationForward,
+            attenuationReverse,
+        }
+    }
+
     window.PadCalculator = {
         GetMinimumMatchAttenuation,
         GetPiPad,
+        EvaluatePiPad,
     }
 }())

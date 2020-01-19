@@ -25,4 +25,16 @@ describe('An attenuator calculator', () => {
         expect(pad6Db.series).toBeCloseTo(37.982, 3);
         expect(pad6Db.shuntOut).toBeCloseTo(246.827, 3);
     });
+
+    it('should evaluate pi pads', () => {
+        let samplePad = PadCalculator.EvaluatePiPad({
+            shuntIn: 50,
+            series: 200,
+            shuntOut: 30,
+        }, 50, 50);
+        expect(samplePad.zIn).toBeCloseTo(40.698, 3);
+        expect(samplePad.zOut).toBeCloseTo(26.471, 3);
+        expect(samplePad.attenuationForward).toBeCloseTo(22.28, 2);
+        expect(samplePad.attenuationReverse).toBeCloseTo(22.28, 2);
+    });
 })
