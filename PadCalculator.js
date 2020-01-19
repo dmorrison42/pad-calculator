@@ -49,6 +49,12 @@
         return power2dB((1 / zA) / (Math.pow(vOut, 2) / zC));
     }
 
+    function calculateVSWR(z, calc) {
+        let a = ((1 + (calc - z) / (calc + z)) / (1 - (calc - z) / (calc + z)));
+        let b = ((1 - (calc - z) / (calc + z)) / (1 + (calc - z) / (calc + z)));
+        return Math.max(a, b);
+    }
+
     function EvaluatePiPad(pad, zIn, zOut) {
         if (zIn == null && zOut == null) {
             let x = 10000;
@@ -69,6 +75,8 @@
         return {
             zIn: calcZIn,
             zOut: calcZOut,
+            vswrIn: calculateVSWR(zIn, calcZIn),
+            vswrOut: calculateVSWR(zOut, calcZOut),
             attenuationForward,
             attenuationReverse,
         }
