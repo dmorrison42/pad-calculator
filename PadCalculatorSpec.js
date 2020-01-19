@@ -72,4 +72,15 @@ describe('An attenuator calculator', () => {
         expect(samplePad.vswrIn).toBeCloseTo(1.226, 3);
         expect(samplePad.vswrOut).toBeCloseTo(2.833, 3);
     });
+
+    it('should calculate return loss', () => {
+        let samplePad = PadCalculator.EvaluatePiPad({
+            shuntIn: 50,
+            series: 200,
+            shuntOut: 30,
+        }, 50, 75);
+
+        expect(samplePad.returnLossIn).toBeCloseTo(-19.875, 3);
+        expect(samplePad.returnLossOut).toBeCloseTo(-6.407, 3);
+    });
 })

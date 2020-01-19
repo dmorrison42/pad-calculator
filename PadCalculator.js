@@ -55,6 +55,10 @@
         return Math.max(a, b);
     }
 
+    function CalculateReturnLoss(z, calc) {
+        return v2dB(Math.abs((calc - z) / (calc + z)));
+    }
+
     function EvaluatePiPad(pad, zIn, zOut) {
         if (zIn == null && zOut == null) {
             let x = 10000;
@@ -77,6 +81,8 @@
             zOut: calcZOut,
             vswrIn: calculateVSWR(zIn, calcZIn),
             vswrOut: calculateVSWR(zOut, calcZOut),
+            returnLossIn: CalculateReturnLoss(zIn, calcZIn),
+            returnLossOut: CalculateReturnLoss(zOut, calcZOut),
             attenuationForward,
             attenuationReverse,
         }
