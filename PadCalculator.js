@@ -135,8 +135,8 @@
     function GetNearestValues(series, exact) {
         let values = resistorInfo.Series[series].Values;
         let low = 0;
-        // TODO: jump to correct order of magnitude
-        for (var i = -1; ; i++) {
+
+        for (var i = Math.floor(Math.log10(exact)) - 1; ; i++) {
             let mag = Math.pow(10, i);
             for (var j = -1; j < values.length; j++) {
                 let value = mag * values[j];
