@@ -14,6 +14,16 @@
 
     resistorInfoPromise.then(data => resistorInfo = data);
 
+    class PiPad {
+        constructor(shuntIn, series, shuntOut, circuitZIn, circuitZOut) {
+            this.shuntIn = shuntIn;
+            this.series = series;
+            this.shuntOut = shuntOut;
+            this.circuitZIn = circuitZIn;
+            this.circuitZOut = circuitZOut;
+        }
+    }
+
     function v2dB(x) {
         return 20 * Math.log10(x);
     }
@@ -44,21 +54,17 @@
 
         let series = (1 - vOut) * zIn * shuntIn / (shuntIn - zIn);
 
-        return {
-            shuntIn,
-            series,
-            shuntOut,
-        };
+        return new PiPad(shuntIn, series, shuntOut, zIn, zOut);
     }
 
-    function CalculatePiInputImpedance(a, b, c, zC) {
+    function CalculatePiImpedance(a, b, c, zC) {
         let n = a * (b * zC + b * c + c * zC);
         let d = c * zC + ((b + a) * (zC + c));
         return n / d;
     }
 
     function CalculatePiAttenuation(a, b, c, zA, zC) {
-        let zACalculated = CalculatePiInputImpedance(a, b, c, zC);
+        let zACalculated = CalculatePiImpedance(a, b, c, zC);
         let vIn = 2 - ((2 * zA) / (zA + zACalculated))
         let vOut = (vIn * c * zC) / (b * (zC + c) + c * zC)
         return power2dB((1 / zA) / (Math.pow(vOut, 2) / zC));
@@ -87,8 +93,8 @@
             return result;
         }
 
-        let calcZIn = CalculatePiInputImpedance(pad.shuntIn, pad.series, pad.shuntOut, zOut);
-        let calcZOut = CalculatePiInputImpedance(pad.shuntOut, pad.series, pad.shuntIn, zIn);
+        let calcZIn = CalculatePiImpedance(pad.shuntIn, pad.series, pad.shuntOut, zOut);
+        let calcZOut = CalculatePiImpedance(pad.shuntOut, pad.series, pad.shuntIn, zIn);
         let attenuationForward = CalculatePiAttenuation(pad.shuntIn, pad.series, pad.shuntOut, zIn, zOut)
         let attenuationReverse = CalculatePiAttenuation(pad.shuntOut, pad.series, pad.shuntIn, zOut, zIn)
         return {
