@@ -169,11 +169,6 @@
             }
         }
 
-        console.log(pads);
-        console.log(pads
-            .map(p => EvaluatePiPad(p, 50, 50))
-            .map(e => e.attenuationForward));
-
         return pads;
     }
 
