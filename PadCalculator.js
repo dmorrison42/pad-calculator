@@ -22,6 +22,42 @@
             this.circuitZIn = circuitZIn;
             this.circuitZOut = circuitZOut;
         }
+
+        get zIn() {
+            return calculatePiImpedance(
+                this.shuntIn, this.series, this.shuntOut, this.circuitZOut);
+        }
+
+        get zOut() {
+            return calculatePiImpedance(
+                this.shuntOut, this.series, this.shuntIn, this.circuitZIn);
+        }
+
+        get vswrIn() {
+            return calculateVSWR(this.circuitZIn, this.zIn);
+        }
+
+        get vswrOut() {
+            return calculateVSWR(this.circuitZOut, this.zOut);
+        }
+
+        get returnLossIn() {
+            return calculateReturnLoss(this.circuitZIn, this.zIn);
+        }
+
+        get returnLossOut() {
+            return calculateReturnLoss(this.circuitZOut, this.zOut);
+        }
+
+        get attenuationForward() {
+            return calculatePiAttenuation(
+                this.shuntIn, this.series, this.shuntOut, this.circuitZIn, this.circuitZOut);
+        }
+
+        get attenuationReverse() {
+            return calculatePiAttenuation(
+                this.shuntIn, this.series, this.shuntOut, this.circuitZIn, this.circuitZOut);
+        }
     }
 
     function v2dB(x) {
@@ -57,14 +93,14 @@
         return new PiPad(shuntIn, series, shuntOut, zIn, zOut);
     }
 
-    function CalculatePiImpedance(a, b, c, zC) {
+    function calculatePiImpedance(a, b, c, zC) {
         let n = a * (b * zC + b * c + c * zC);
         let d = c * zC + ((b + a) * (zC + c));
         return n / d;
     }
 
-    function CalculatePiAttenuation(a, b, c, zA, zC) {
-        let zACalculated = CalculatePiImpedance(a, b, c, zC);
+    function calculatePiAttenuation(a, b, c, zA, zC) {
+        let zACalculated = calculatePiImpedance(a, b, c, zC);
         let vIn = 2 - ((2 * zA) / (zA + zACalculated))
         let vOut = (vIn * c * zC) / (b * (zC + c) + c * zC)
         return power2dB((1 / zA) / (Math.pow(vOut, 2) / zC));
@@ -76,7 +112,7 @@
         return Math.max(a, b);
     }
 
-    function CalculateReturnLoss(z, calc) {
+    function calculateReturnLoss(z, calc) {
         return v2dB(Math.abs((calc - z) / (calc + z)));
     }
 
@@ -93,20 +129,7 @@
             return result;
         }
 
-        let calcZIn = CalculatePiImpedance(pad.shuntIn, pad.series, pad.shuntOut, zOut);
-        let calcZOut = CalculatePiImpedance(pad.shuntOut, pad.series, pad.shuntIn, zIn);
-        let attenuationForward = CalculatePiAttenuation(pad.shuntIn, pad.series, pad.shuntOut, zIn, zOut)
-        let attenuationReverse = CalculatePiAttenuation(pad.shuntOut, pad.series, pad.shuntIn, zOut, zIn)
-        return {
-            zIn: calcZIn,
-            zOut: calcZOut,
-            vswrIn: calculateVSWR(zIn, calcZIn),
-            vswrOut: calculateVSWR(zOut, calcZOut),
-            returnLossIn: CalculateReturnLoss(zIn, calcZIn),
-            returnLossOut: CalculateReturnLoss(zOut, calcZOut),
-            attenuationForward,
-            attenuationReverse,
-        }
+        return new PiPad(pad.shuntIn, pad.series, pad.shuntOut, zIn, zOut);
     }
 
     function GetNearestValues(series, exact) {
