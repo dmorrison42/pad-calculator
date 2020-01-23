@@ -1,4 +1,19 @@
 !(function () {
+    var resistorInfo = null;
+
+    var resistorInfoPromise = new Promise((resolve, reject) => {
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                resolve(JSON.parse(this.responseText));
+            }
+        }
+        request.open('GET', 'ResistorValues.json');
+        request.send();
+    });
+
+    resistorInfoPromise.then(data => resistorInfo = data);
+
     function v2dB(x) {
         return 20 * Math.log10(x);
     }
@@ -88,9 +103,56 @@
         }
     }
 
+    function GetNearestValues(series, exact) {
+        let values = resistorInfo.Series[series].Values;
+        let low = 0;
+        // TODO: jump to correct order of magnitude
+        for (var i = -1; ; i++) {
+            let mag = Math.pow(10, i);
+            for (var j = -1; j < values.length; j++) {
+                let value = mag * values[j];
+                if (value <= exact) low = value;
+                if (value >= exact) {
+                    return [low, value];
+                }
+            }
+        }
+    }
+
+    function GetPadsInSeries(resistorSeries, attenuation) {
+        // TODO: Do more searching around
+        let nearest = (v) => GetNearestValues(resistorSeries, v)
+        let ideal = PadCalculator.GetPiPad(attenuation);
+        let shuntIn = nearest(ideal.shuntIn);
+        let shuntOut = nearest(ideal.shuntOut);
+        let series = nearest(ideal.series);
+
+        let pads = [];
+        for (var i = 0; i < shuntIn.length; i++) {
+            for (var j = 0; j < series.length; j++) {
+                for (var k = 0; k < shuntOut.length; k++) {
+                    pads.push({
+                        shuntIn: shuntIn[i],
+                        series: series[j],
+                        shuntOut: shuntOut[k],
+                    })
+                }
+            }
+        }
+
+        console.log(pads);
+        console.log(pads
+            .map(p => EvaluatePiPad(p, 50, 50))
+            .map(e => e.attenuationForward));
+
+        return pads;
+    }
+
     window.PadCalculator = {
+        LoadPromise: resistorInfoPromise.then(),
         GetMinimumMatchAttenuation,
         GetPiPad,
         EvaluatePiPad,
+        GetPadsInSeries,
     }
 }())

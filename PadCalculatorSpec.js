@@ -83,4 +83,10 @@ describe('An attenuator calculator', () => {
         expect(samplePad.returnLossIn).toBeCloseTo(-19.875, 3);
         expect(samplePad.returnLossOut).toBeCloseTo(-6.407, 3);
     });
+
+    it('should search for close real pads', async () => {
+        await PadCalculator.LoadPromise;
+        let samplePads = PadCalculator.GetPadsInSeries('E24', 3);
+        expect(samplePads.length).toBeGreaterThan(0);
+    });
 })
