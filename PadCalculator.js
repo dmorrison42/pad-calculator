@@ -21,6 +21,20 @@
             this.shuntOut = shuntOut;
             this.circuitZIn = circuitZIn;
             this.circuitZOut = circuitZOut;
+
+            if (circuitZIn == null && circuitZOut == null) {
+                let x = 10000;
+                let y = 10000;
+                let result = {};
+                for (let i = 1; i < 100; i++) {
+                    result = new PiPad(shuntIn, series, shuntOut, x, y);
+                    x = result.zIn;
+                    y = result.zOut;
+                }
+                this.circuitZIn = x;
+                this.circuitZOut = y;
+            }
+
         }
 
         get zIn() {
@@ -116,22 +130,6 @@
         return v2dB(Math.abs((calc - z) / (calc + z)));
     }
 
-    function EvaluatePiPad(pad, zIn, zOut) {
-        if (zIn == null && zOut == null) {
-            let x = 10000;
-            let y = 10000;
-            let result = {};
-            for (let i = 1; i < 100; i++) {
-                result = EvaluatePiPad(pad, x, y);
-                x = result.zIn;
-                y = result.zOut;
-            }
-            return result;
-        }
-
-        return new PiPad(pad.shuntIn, pad.series, pad.shuntOut, zIn, zOut);
-    }
-
     function GetNearestValues(series, exact) {
         let values = resistorInfo.Series[series].Values;
         let low = 0;
@@ -176,7 +174,7 @@
         LoadPromise: resistorInfoPromise.then(),
         GetMinimumMatchAttenuation,
         GetPiPad,
-        EvaluatePiPad,
+        PiPad,
         GetPadsInSeries,
     }
 }())

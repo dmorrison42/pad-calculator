@@ -27,11 +27,7 @@ describe('An attenuator calculator', () => {
     });
 
     it('should evaluate pi pads', () => {
-        let samplePad = PadCalculator.EvaluatePiPad({
-            shuntIn: 50,
-            series: 200,
-            shuntOut: 30,
-        }, 50, 50);
+        let samplePad = new PadCalculator.PiPad(50, 200, 30, 50, 50);
         expect(samplePad.zIn).toBeCloseTo(40.698, 3);
         expect(samplePad.zOut).toBeCloseTo(26.471, 3);
         expect(samplePad.attenuationForward).toBeCloseTo(22.28, 2);
@@ -39,11 +35,7 @@ describe('An attenuator calculator', () => {
     });
 
     it('should return the inputs given outputs', () => {
-        let samplePad = PadCalculator.EvaluatePiPad({
-            shuntIn: 150.476,
-            series: 37.352,
-            shuntOut: 150.476,
-        });
+        let samplePad = new PadCalculator.PiPad(150.476, 37.352, 150.476);
         expect(samplePad.zIn).toBeCloseTo(50, 3);
         expect(samplePad.zOut).toBeCloseTo(50, 3);
         expect(samplePad.attenuationForward).toBeCloseTo(6, 3);
@@ -51,11 +43,7 @@ describe('An attenuator calculator', () => {
     });
 
     it('should return the inputs given outputs with mismatch', () => {
-        let samplePad = PadCalculator.EvaluatePiPad({
-            shuntIn: 86.517,
-            series: 45.747,
-            shuntOut: 2386.203,
-        });
+        let samplePad = new PadCalculator.PiPad(86.517, 45.747, 2386.203);
         expect(samplePad.zIn).toBeCloseTo(50, 3);
         expect(samplePad.zOut).toBeCloseTo(75, 3);
         expect(samplePad.attenuationForward).toBeCloseTo(6, 3);
@@ -63,22 +51,14 @@ describe('An attenuator calculator', () => {
     });
 
     it('should calculate VSWR', () => {
-        let samplePad = PadCalculator.EvaluatePiPad({
-            shuntIn: 50,
-            series: 200,
-            shuntOut: 30,
-        }, 50, 75);
+        let samplePad = new PadCalculator.PiPad(50, 200, 30, 50, 75);
 
         expect(samplePad.vswrIn).toBeCloseTo(1.226, 3);
         expect(samplePad.vswrOut).toBeCloseTo(2.833, 3);
     });
 
     it('should calculate return loss', () => {
-        let samplePad = PadCalculator.EvaluatePiPad({
-            shuntIn: 50,
-            series: 200,
-            shuntOut: 30,
-        }, 50, 75);
+        let samplePad = new PadCalculator.PiPad(50, 200, 30, 50, 75);
 
         expect(samplePad.returnLossIn).toBeCloseTo(-19.875, 3);
         expect(samplePad.returnLossOut).toBeCloseTo(-6.407, 3);
