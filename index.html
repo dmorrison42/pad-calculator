@@ -16,6 +16,10 @@
             <option value="impedance">Impedance</option>
             <option value="all">TMI</option>
         </select>
+        <select v-model="series" v-if="mode === 'calculator'">
+            <option value="ideal">Ideal</option>
+            <option v-for="name in seriesList">{{name}}</option>
+        </select>
         <table v-if="mode=='simulator'">
             <tr>
                 <td>

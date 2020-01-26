@@ -1,5 +1,5 @@
 /* global Vue */
-import { PiPad } from './PadCalculator.js'
+import { PiPad, resistorInfo } from './PadCalculator.js'
 import { PadList } from './PadList.js'
 
 Vue.component('')
@@ -11,7 +11,7 @@ window.onload = function () {
       mode: 'calculator',
       attenuation: 4.2,
       shuntIn: null,
-      series: null,
+      series: 'ideal',
       shuntOut: null,
       circuitIn: 50,
       circuitOut: 50,
@@ -22,7 +22,11 @@ window.onload = function () {
         return new PiPad(this.shuntIn, this.series, this.shuntOut, this.circuitIn, this.circuitOut)
       },
       calculatorPads () {
-        return [PiPad.get(this.attenuation, this.circuitIn, this.circuitOut)]
+        const ideal = PiPad.get(this.attenuation, this.circuitIn, this.circuitOut)
+        if (this.series === 'ideal') {
+          return [ideal]
+        }
+        return [ideal, ...PiPad.getInSeries(this.series, this.attenuation, this.circuitIn, this.circuitOut)]
       },
       reflectionValues () {
         switch (this.reflection) {
@@ -41,6 +45,9 @@ window.onload = function () {
       },
       calculatorValues () {
         return ['Shunt In', 'Series', 'Shunt Out', 'Forward Attenuation', 'Reverse Attenuation', ...this.reflectionValues]
+      },
+      seriesList () {
+        return Object.keys((resistorInfo || {}).Series)
       }
     },
     methods: {

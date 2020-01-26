@@ -1,4 +1,5 @@
 var resistorInfo = null
+export { resistorInfo }
 
 var resistorInfoPromise = new Promise((resolve, reject) => {
   var request = new window.XMLHttpRequest()
@@ -103,11 +104,7 @@ export class PiPad {
     for (var i = 0; i < shuntIn.length; i++) {
       for (var j = 0; j < series.length; j++) {
         for (var k = 0; k < shuntOut.length; k++) {
-          pads.push({
-            shuntIn: shuntIn[i],
-            series: series[j],
-            shuntOut: shuntOut[k]
-          })
+          pads.push(new PiPad(shuntIn[i], series[j], shuntOut[k]))
         }
       }
     }
@@ -157,11 +154,12 @@ function calculateReturnLoss (z, calc) {
   return v2dB(Math.abs((calc - z) / (calc + z)))
 }
 
-function GetNearestValues (series, exact) {
+export function GetNearestValues (series, exact) {
   const values = resistorInfo.Series[series].Values
   let low = 0
+  const mag = Math.log10(Math.max(...values))
 
-  for (var i = Math.floor(Math.log10(exact)) - 1; ; i++) {
+  for (var i = Math.floor(Math.log10(exact) - mag); ; i++) {
     const mag = Math.pow(10, i)
     for (var j = -1; j < values.length; j++) {
       const value = mag * values[j]
