@@ -1,0 +1,83 @@
+<head>
+    <title>Pad Calculator Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="module" src="./UI.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <select v-model="mode">
+            <option value="simulator">Pad Simulator</option>
+            <option value="calculator">Pad Calculator</option>
+        </select>
+        <select v-model="reflection">
+            <option value="vswr">VSWR</option>
+            <option value="returnLoss">Return Loss</option>
+            <option value="impedance">Impedance</option>
+            <option value="all">TMI</option>
+        </select>
+        <table v-if="mode=='simulator'">
+            <tr>
+                <td>
+                    Shunt In
+                </td>
+                <td>
+                    <input v-model="shuntIn" type="number">
+                </td>
+                <td>
+                    Circuit Input Impedance
+                </td>
+                <td>
+                    Circuit Output Impedance
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Series
+                </td>
+                <td>
+                    <input v-model="series" type="number">
+                </td>
+                <td>
+                    <input v-model="circuitIn" type="number">
+                </td>
+                <td>
+                    <input v-model="circuitOut" type="number">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Shunt Out
+                </td>
+                <td>
+                    <input v-model="shuntOut" type="number">
+                </td>
+            </tr>
+        </table>
+        <pad-list :pads="[pad]" :keys="simulatorValues" v-if="mode=='simulator'"></pad-list>
+        <table v-if="mode=='calculator'">
+            <tr>
+                <th>
+                    Attenuation
+                </th>
+                <th>
+                    Circuit Input Impedance
+                </th>
+                <th>
+                    Circuit Output Impedance
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <input v-model="attenuation" step="0.1" type="number">
+                </td>
+                <td>
+                    <input v-model="circuitIn" type="number">
+                </td>
+                <td>
+                    <input v-model="circuitOut" type="number">
+            </tr>
+        </table>
+        <pad-list :pads="calculatorPads" :keys="calculatorValues" v-if="mode=='calculator'"></pad-list>
+    </div>
+</body>
