@@ -128,9 +128,6 @@ function power2dB (x) {
   return 10 * Math.log10(x)
 }
 
-export function GetMinimumMatchAttenuation (zIn, zOut) {
-}
-
 function calculatePiImpedance (a, b, c, zC) {
   const n = a * (b * zC + b * c + c * zC)
   const d = c * zC + ((b + a) * (zC + c))
