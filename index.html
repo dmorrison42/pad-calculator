@@ -26,7 +26,7 @@
                     Shunt In
                 </td>
                 <td>
-                    <input v-model="shuntIn" type="number">
+                    <input v-model.number="shuntIn" type="number">
                 </td>
                 <td>
                     Circuit Input Impedance
@@ -40,13 +40,13 @@
                     Series
                 </td>
                 <td>
-                    <input v-model="series" type="number">
+                    <input v-model.number="series" type="number">
                 </td>
                 <td>
-                    <input v-model="circuitIn" type="number">
+                    <input v-model.number="circuitIn" type="number">
                 </td>
                 <td>
-                    <input v-model="circuitOut" type="number">
+                    <input v-model.number="circuitOut" type="number">
                 </td>
             </tr>
             <tr>
@@ -54,7 +54,7 @@
                     Shunt Out
                 </td>
                 <td>
-                    <input v-model="shuntOut" type="number">
+                    <input v-model.number="shuntOut" type="number">
                 </td>
             </tr>
         </table>
@@ -73,13 +73,13 @@
             </tr>
             <tr>
                 <td>
-                    <input v-model="attenuation" step="0.1" type="number">
+                    <input v-model.number="attenuation" step="0.1" type="number">
                 </td>
                 <td>
-                    <input v-model="circuitIn" type="number">
+                    <input v-model.number="circuitIn" type="number">
                 </td>
                 <td>
-                    <input v-model="circuitOut" type="number">
+                    <input v-model.number="circuitOut" type="number">
             </tr>
         </table>
         <pad-list :pads="calculatorPads" :keys="calculatorValues" v-if="mode=='calculator'"></pad-list>
