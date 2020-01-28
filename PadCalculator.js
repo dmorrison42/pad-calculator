@@ -109,7 +109,7 @@ export class PiPad {
       }
     }
 
-    return pads
+    return filterPads(attenuation, pads)
   }
 
   static attenuationRequired (zIn, zOut) {
@@ -118,6 +118,27 @@ export class PiPad {
     const lin = Math.sqrt(large / small) + Math.sqrt(large / small - 1)
     return v2dB(lin)
   }
+}
+
+function filterPads (targetAttenuation, pads) {
+  function betterThan (a, b) {
+    if (a === b) {
+      return false
+    }
+    if (a.vswrIn > b.vswrIn) {
+      return false
+    }
+    if (a.vswrOut > b.vswrOut) {
+      return false
+    }
+    const aDiff = Math.abs(a.attenuationForward - targetAttenuation)
+    const bDiff = Math.abs(b.attenuationForward - targetAttenuation)
+    if (aDiff > bDiff) {
+      return false
+    }
+    return true
+  }
+  return pads.filter(a => !pads.some(b => betterThan(b, a)))
 }
 
 function v2dB (x) {
