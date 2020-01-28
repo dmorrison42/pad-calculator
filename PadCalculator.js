@@ -104,7 +104,7 @@ export class PiPad {
     for (var i = 0; i < shuntIn.length; i++) {
       for (var j = 0; j < series.length; j++) {
         for (var k = 0; k < shuntOut.length; k++) {
-          pads.push(new PiPad(shuntIn[i], series[j], shuntOut[k]))
+          pads.push(new PiPad(shuntIn[i], series[j], shuntOut[k], zIn, zOut))
         }
       }
     }

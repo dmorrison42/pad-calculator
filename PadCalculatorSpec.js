@@ -81,8 +81,9 @@ describe('An attenuator calculator', () => {
 
   it('should search for close real pads', async () => {
     await LoadPromise
-    const samplePads = PiPad.getInSeries('E24', 3)
+    const samplePads = PiPad.getInSeries('E24', 3, 50, 50)
     expect(samplePads.length).toBeGreaterThan(0)
     expect(samplePads[0].vswrIn).not.toBe(undefined)
+    expect(samplePads.every(p => p.returnLossIn > -100)).toBe(true)
   })
 })
