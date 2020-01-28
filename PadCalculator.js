@@ -138,7 +138,13 @@ function filterPads (targetAttenuation, pads) {
     }
     return true
   }
-  return pads.filter(a => !pads.some(b => betterThan(b, a)))
+  return pads
+    .filter(a => !pads.some(b => betterThan(b, a)))
+    .sort((a, b) => {
+      const aDiff = Math.abs(a.attenuationForward - targetAttenuation)
+      const bDiff = Math.abs(b.attenuationForward - targetAttenuation)
+      return aDiff - bDiff
+    })
 }
 
 function v2dB (x) {
