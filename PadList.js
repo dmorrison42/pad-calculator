@@ -16,6 +16,7 @@ export const PadList = Vue.component('pad-list', {
         'Shunt Out': this.round(pad.shuntOut, 2),
         'Forward Attenuation': this.round(pad.attenuationForward, 2),
         'Reverse Attenuation': this.round(pad.attenuationReverse, 2),
+        Attenuation: this.round(pad.attenuationForward, 2),
         'Z In': this.round(pad.zIn, 2),
         'Z Out': this.round(pad.zIn, 2),
         'Input Return Loss': this.round(pad.returnLossIn, 2),

@@ -41,10 +41,10 @@ window.onload = function () {
         }
       },
       simulatorValues () {
-        return ['Forward Attenuation', 'Reverse Attenuation', ...this.reflectionValues]
+        return ['Attenuation', ...this.reflectionValues]
       },
       calculatorValues () {
-        return ['Shunt In', 'Series', 'Shunt Out', 'Forward Attenuation', 'Reverse Attenuation', ...this.reflectionValues]
+        return ['Shunt In', 'Series', 'Shunt Out', 'Attenuation', ...this.reflectionValues]
       },
       seriesList () {
         return Object.keys((resistorInfo || {}).Series)
