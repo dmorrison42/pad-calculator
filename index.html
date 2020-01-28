@@ -18,7 +18,8 @@
         </select>
         <select v-model="series" v-if="mode === 'calculator'">
             <option value="ideal">Ideal</option>
-            <option v-for="name in seriesList">{{name}}</option>
+            <option v-for="name in seriesList" :value="name">{{name}}
+                ({{tolerances(name).map(n => n + '%').join(', ')}})</option>
         </select>
         <table v-if="mode=='simulator'">
             <tr>

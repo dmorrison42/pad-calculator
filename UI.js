@@ -11,7 +11,7 @@ window.onload = function () {
       mode: 'calculator',
       attenuation: 4.2,
       shuntIn: null,
-      series: 'ideal',
+      series: 'E24',
       shuntOut: null,
       circuitIn: 50,
       circuitOut: 50,
@@ -53,6 +53,9 @@ window.onload = function () {
     methods: {
       round (x) {
         return Math.round(x * 100) / 100
+      },
+      tolerances (x) {
+        return resistorInfo.Series[x].Tolerances
       }
     },
     components: { PadList }
