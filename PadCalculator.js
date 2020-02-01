@@ -179,6 +179,8 @@ function calculateReturnLoss (z, calc) {
 }
 
 export function GetNearestValues (series, exact) {
+  if (exact < 0) return [NaN]
+
   const values = resistorInfo.Series[series].Values
   let low = 0
   const mag = Math.log10(Math.max(...values))

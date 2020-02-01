@@ -79,6 +79,12 @@ describe('An attenuator calculator', () => {
     expect(Math.min(...nearest)).toBeGreaterThan(1)
   })
 
+  it('It shouldn\'t hang if there is no real resistor', async () => {
+    await LoadPromise
+    expect(GetNearestValues('E192', -5)[0]).toBeNaN()
+    expect(GetNearestValues('E192', Infinity)[0]).toBe(Infinity)
+  })
+
   it('should search for close real pads', async () => {
     await LoadPromise
     const samplePads = PiPad.getInSeries('E24', 3, 50, 50)
