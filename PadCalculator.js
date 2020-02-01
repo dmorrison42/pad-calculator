@@ -179,6 +179,7 @@ function calculateReturnLoss (z, calc) {
 }
 
 export function GetNearestValues (series, exact) {
+  if (isNaN(exact)) return [NaN]
   if (exact < 0) return [NaN]
 
   const values = resistorInfo.Series[series].Values

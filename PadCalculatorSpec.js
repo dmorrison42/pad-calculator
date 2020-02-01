@@ -79,9 +79,11 @@ describe('An attenuator calculator', () => {
     expect(Math.min(...nearest)).toBeGreaterThan(1)
   })
 
-  it('It shouldn\'t hang if there is no real resistor', async () => {
+  it('It shouldn\'t hang in edge case resistors', async () => {
     await LoadPromise
+    expect(GetNearestValues('E192', 0)[0]).toBe(0)
     expect(GetNearestValues('E192', -5)[0]).toBeNaN()
+    expect(GetNearestValues('E192', NaN)[0]).toBeNaN()
     expect(GetNearestValues('E192', Infinity)[0]).toBe(Infinity)
   })
 
