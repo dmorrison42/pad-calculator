@@ -20,14 +20,10 @@ window.onload = async function () {
     },
     computed: {
       pad () {
-        return new PiPad(this.shuntIn, this.series, this.shuntOut, this.circuitIn, this.circuitOut)
-      },
-      calculatorPads () {
-        const ideal = PiPad.get(this.attenuation, this.circuitIn, this.circuitOut)
-        if (this.series === 'ideal') {
-          return [ideal]
+        if (this.mode === 'calculator') {
+          return PiPad.get(this.attenuation, this.circuitIn, this.circuitOut)
         }
-        return [ideal, ...PiPad.getInSeries(this.series, this.attenuation, this.circuitIn, this.circuitOut)]
+        return new PiPad(this.shuntIn, this.series, this.shuntOut, this.circuitIn, this.circuitOut)
       },
       reflectionValues () {
         switch (this.reflection) {

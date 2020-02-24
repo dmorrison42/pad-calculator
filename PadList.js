@@ -1,7 +1,8 @@
 /* global Vue */
+import { PiPad } from './PadCalculator.js'
 
 export const PadList = Vue.component('pad-list', {
-  props: ['pads', 'keys'],
+  props: ['pad', 'keys', 'series'],
   methods: {
     round (x, precision) {
       if (precision == null) precision = 0
@@ -9,8 +10,16 @@ export const PadList = Vue.component('pad-list', {
     }
   },
   computed: {
+    calculatorPads () {
+      return [this.pad, ...PiPad.getInSeries(
+        this.series,
+        // Pretty sure this is always the same when considering reflection
+        this.pad.attenuationForward,
+        this.pad.circuitZIn,
+        this.pad.circuitZOut)]
+    },
     formated (pad) {
-      return this.pads.map(pad => ({
+      return this.calculatorPads.map(pad => ({
         'Shunt In': this.round(pad.shuntIn, 2),
         Series: this.round(pad.series, 2),
         'Shunt Out': this.round(pad.shuntOut, 2),
