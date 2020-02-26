@@ -8,10 +8,10 @@ export const PadList = Vue.component('pad-list', {
   methods: {
     cap (value, floor, ceiling) {
       if (value > ceiling) {
-        return `>${ceiling.toFixed(places)}`
+        return `> ${ceiling.toFixed(places)}`
       }
       if (value < floor) {
-        return `<${floor.toFixed(places)}`
+        return `< ${floor.toFixed(places)}`
       }
       return value.toFixed(places)
     },
