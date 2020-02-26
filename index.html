@@ -60,7 +60,9 @@
                 </td>
             </tr>
         </table>
-        <pad-list :pad="pad" :single="mode=='simulator'" :keys="simulatorValues" v-if="mode=='simulator'"></pad-list>
+        <pad-list :pad="pad" :single="mode=='simulator'" :keys="simulatorValues" v-if="mode=='simulator'"
+            @select-pad="selectPad">
+        </pad-list>
         <table v-if="mode=='calculator'">
             <tr>
                 <th>
@@ -84,7 +86,8 @@
                     <input v-model.number="circuitOut" type="number">
             </tr>
         </table>
-        <pad-list :pad="pad" :series="resistorSeries" :keys="calculatorValues" v-if="mode=='calculator'">
+        <pad-list :pad="pad" :series="resistorSeries" :keys="calculatorValues" v-if="mode=='calculator'"
+            @select-pad="selectPad">
         </pad-list>
     </div>
 </body>

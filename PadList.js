@@ -80,12 +80,12 @@ export const PadList = Vue.component('pad-list', {
     <tr>
       <th v-for="key in keys" :key="key">{{key}}</th>
     </tr>
-    <tr>
+    <tr @click="$emit('select-pad', pad)">
       <th v-for="key in keys" :key="key" title="ideal">{{format(pad)[key]}}</th>
     </tr>
   </thead>
   <tbody v-if="single !== true">
-    <tr v-for="pad in calculatorPads">
+    <tr v-for="pad in calculatorPads" @click="$emit('select-pad', pad)">
       <td v-for="key in keys" :key="key" :title="ranges(pad, key)">{{format(pad)[key]}}</td>
     </tr>
   </tbody>

@@ -54,6 +54,17 @@ window.onload = async function () {
       },
       tolerances (x) {
         return resistorInfo.Series[x].Tolerances
+      },
+      selectPad (pad) {
+        if (this.mode === 'calculator') {
+          this.shuntIn = Math.round(pad.shuntIn * 100) / 100
+          this.series = Math.round(pad.series * 100) / 100
+          this.shuntOut = Math.round(pad.shuntOut * 100) / 100
+          this.mode = 'simulator'
+        } else {
+          this.attenuation = Math.round(pad.attenuationForward * 100) / 100
+          this.mode = 'calculator'
+        }
       }
     },
     components: { PadList }
