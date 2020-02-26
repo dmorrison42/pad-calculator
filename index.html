@@ -1,5 +1,7 @@
 <head>
     <title>Pad Calculator Test</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script type="module" src="./UI.js"></script>
 </head>
@@ -16,7 +18,7 @@
             <option value="impedance">Impedance</option>
             <option value="all">TMI</option>
         </select>
-        <select v-model="series" v-if="mode === 'calculator'">
+        <select v-model="resistorSeries" v-if="mode === 'calculator'">
             <option v-for="name in seriesList" :value="name">{{name}}
                 ({{tolerances(name).map(n => n + '%').join(', ')}})</option>
         </select>
@@ -58,7 +60,7 @@
                 </td>
             </tr>
         </table>
-        <pad-list :pads="[pad]" :keys="simulatorValues" v-if="mode=='simulator'"></pad-list>
+        <pad-list :pad="pad" :single="mode=='simulator'" :keys="simulatorValues" v-if="mode=='simulator'"></pad-list>
         <table v-if="mode=='calculator'">
             <tr>
                 <th>
@@ -82,6 +84,7 @@
                     <input v-model.number="circuitOut" type="number">
             </tr>
         </table>
-        <pad-list :pad="pad" :series="series" :keys="calculatorValues" v-if="mode=='calculator'"></pad-list>
+        <pad-list :pad="pad" :series="resistorSeries" :keys="calculatorValues" v-if="mode=='calculator'">
+        </pad-list>
     </div>
 </body>

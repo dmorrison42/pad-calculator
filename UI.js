@@ -11,9 +11,10 @@ window.onload = async function () {
     data: {
       mode: 'calculator',
       attenuation: 4.2,
-      shuntIn: null,
-      series: 'E24',
-      shuntOut: null,
+      resistorSeries: 'E24',
+      shuntIn: 10,
+      series: 10,
+      shuntOut: 10,
       circuitIn: 50,
       circuitOut: 50,
       reflection: 'returnLoss'

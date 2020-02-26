@@ -4,7 +4,7 @@ import { PiPad, resistorInfo } from './PadCalculator.js'
 const places = 2
 
 export const PadList = Vue.component('pad-list', {
-  props: ['pad', 'keys', 'series'],
+  props: ['pad', 'keys', 'series', 'single'],
   methods: {
     cap (value, floor, ceiling) {
       if (value > ceiling) {
@@ -64,7 +64,7 @@ export const PadList = Vue.component('pad-list', {
   },
   computed: {
     calculatorPads () {
-      return [this.pad, ...PiPad.getInSeries(
+      return [...PiPad.getInSeries(
         this.series,
         // Pretty sure this is always the same when considering reflection
         this.pad.attenuationForward,
@@ -75,12 +75,19 @@ export const PadList = Vue.component('pad-list', {
       return resistorInfo.Series[this.series].Tolerances
     }
   },
-  template: `<table>
-  <tr>
-    <th v-for="key in keys" :key="key">{{key}}</th>
-  </tr>
-  <tr v-for="pad in calculatorPads">
-    <td v-for="key in keys" :key="key" align="right" :title="ranges(pad, key)">{{format(pad)[key]}}</td>
-  </tr>
+  template: `<table class="table table-hover table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th v-for="key in keys" :key="key">{{key}}</th>
+    </tr>
+    <tr>
+      <th v-for="key in keys" :key="key" title="ideal">{{format(pad)[key]}}</th>
+    </tr>
+  </thead>
+  <tbody v-if="single !== true">
+    <tr v-for="pad in calculatorPads">
+      <td v-for="key in keys" :key="key" :title="ranges(pad, key)">{{format(pad)[key]}}</td>
+    </tr>
+  </tbody>
 </table>`
 })

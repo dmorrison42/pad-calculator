@@ -16,6 +16,7 @@ This software was built using the following open source projects:
 (Calculator)
 
 - [Vue](https://vuejs.org/) (MIT) Copyright (c) 2013-present, Yuxi (Evan) You
+- [Bootstrap](https://getbootstrap.com/) (MIT) Copyright (c) 2011-2020 Twitter, Inc.; Copyright (c) 2011-2020 The Bootstrap Authors
 
 (Testing)
 
@@ -26,6 +27,5 @@ Wish List
 ---------
 
 - [ ] Add theory of operation
-- [ ] Style the calculator
 - [ ] Add EQ calculator
 - [ ] Add T pad calculator
