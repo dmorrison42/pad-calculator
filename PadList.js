@@ -45,20 +45,24 @@ export const PadList = Vue.component('pad-list', {
               allThePads.push(new PiPad(
                 multipliers[i] * pad.shuntIn,
                 multipliers[j] * pad.series,
-                multipliers[k] * pad.shuntOut))
+                multipliers[k] * pad.shuntOut,
+                pad.circuitZIn,
+                pad.circuitZOut))
             }
           }
         }
 
+        const parse = (a) => parseFloat(a.replace(/[<>]/, ''))
+
         const allValues = allThePads
           .map(this.format)
           .map(v => v[key])
-          .sort()
+          .sort((a, b) => parse(a) - parse(b))
 
         const min = allValues[0]
         const max = allValues[allValues.length - 1]
 
-        return `${tolerance}% ${min}-${max}`
+        return `${tolerance}% ${min} — ${max}`
       }).join('\n')
     }
   },
