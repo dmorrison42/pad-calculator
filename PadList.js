@@ -35,7 +35,7 @@ export const PadList = Vue.component('pad-list', {
       }
     },
     ranges (pad, key) {
-      return this.tolerances.map((tolerance) => {
+      return [key, ...this.tolerances.map((tolerance) => {
         const multipliers = [(100 - tolerance) / 100, (100 + tolerance) / 100]
         const allThePads = [pad]
 
@@ -63,7 +63,7 @@ export const PadList = Vue.component('pad-list', {
         const max = allValues[allValues.length - 1]
 
         return `${tolerance}% ${min} — ${max}`
-      }).join('\n')
+      })].join('\n')
     }
   },
   computed: {
