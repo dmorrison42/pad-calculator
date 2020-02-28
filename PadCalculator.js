@@ -1,21 +1,6 @@
-var resistorInfo = null
+import resistorInfo from './ResistorValues.js'
+
 export { resistorInfo }
-
-var resistorInfoPromise = new Promise((resolve, reject) => {
-  var request = new window.XMLHttpRequest()
-  request.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      resolve(JSON.parse(this.responseText))
-    }
-  }
-  request.open('GET', 'ResistorValues.json')
-  request.send()
-})
-
-resistorInfoPromise.then(data => { resistorInfo = data })
-
-const LoadPromise = resistorInfoPromise.then()
-export { LoadPromise }
 
 export class PiPad {
   constructor (shuntIn, series, shuntOut, circuitZIn, circuitZOut) {

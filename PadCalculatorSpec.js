@@ -1,6 +1,6 @@
 /* eslint-env jasmine */
 
-import { PiPad, LoadPromise, resistorInfo, GetNearestValues } from './PadCalculator.js'
+import { PiPad, resistorInfo, GetNearestValues } from './PadCalculator.js'
 
 describe('An attenuator calculator', () => {
   it('should calculate match attenuation', () => {
@@ -69,18 +69,15 @@ describe('An attenuator calculator', () => {
   })
 
   it('should export real world resistor info', async () => {
-    await LoadPromise
     expect(Object.keys(resistorInfo.Series).length).toBeGreaterThan(1)
   })
 
   it('should calculate nearest real world resistors', async () => {
-    await LoadPromise
     const nearest = GetNearestValues('E192', 210.82)
     expect(Math.min(...nearest)).toBeGreaterThan(1)
   })
 
   it('It shouldn\'t hang in edge case resistors', async () => {
-    await LoadPromise
     expect(GetNearestValues('E192', 0)[0]).toBe(0)
     expect(GetNearestValues('E192', -5)[0]).toBeNaN()
     expect(GetNearestValues('E192', NaN)[0]).toBeNaN()
@@ -88,7 +85,6 @@ describe('An attenuator calculator', () => {
   })
 
   it('should search for close real pads', async () => {
-    await LoadPromise
     const samplePads = PiPad.getInSeries('E24', 3, 50, 50)
     expect(samplePads.length).toBeGreaterThan(0)
     expect(samplePads[0].vswrIn).not.toBe(undefined)

@@ -1,11 +1,10 @@
 /* global Vue */
-import { PiPad, resistorInfo, LoadPromise } from './PadCalculator.js'
+import { PiPad, resistorInfo } from './PadCalculator.js'
 import { PadList } from './PadList.js'
 
 Vue.component('')
 
 window.onload = async function () {
-  await LoadPromise
   var app = new Vue({
     el: '#app',
     data: {
